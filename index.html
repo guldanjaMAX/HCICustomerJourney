@@ -5,27 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HCI Corporate Customer Journey Map</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Raleway:wght@600;700;800&display=swap');
 
   :root {
-    --navy: #0F0E15;
-    --green: #81D742;
-    --teal: #1A6B5C;
+    --navy: #024682;
+    --green: #659BB6;
+    --teal: #7DA5C3;
     --white: #FFFFFF;
-    --light: #F8F9FA;
-    --border: #E2E8F0;
-    --muted: #64748B;
+    --light: #F5F8FA;
+    --border: #D4E1EC;
+    --muted: #5A7A8A;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', sans-serif;
     background: var(--light);
-    color: var(--navy);
+    color: #333333;
   }
 
   .header {
-    background: linear-gradient(135deg, var(--navy) 0%, #1a1930 100%);
+    background: linear-gradient(135deg, var(--navy) 0%, #013A6B 100%);
     color: var(--white);
     padding: 48px 40px 40px;
     text-align: center;
@@ -33,9 +33,9 @@
 
   .header .badge {
     display: inline-block;
-    background: rgba(129,215,66,0.15);
-    border: 1px solid rgba(129,215,66,0.3);
-    color: var(--green);
+    background: rgba(101,155,182,0.15);
+    border: 1px solid rgba(101,155,182,0.3);
+    color: var(--white);
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 1.5px;
@@ -45,7 +45,7 @@
     margin-bottom: 16px;
   }
 
-  .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; font-family: 'Raleway', sans-serif; }
   .header p { font-size: 16px; opacity: 0.75; max-width: 550px; margin: 0 auto; }
 
   .journey-container {
@@ -104,7 +104,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--teal) 0%, var(--green) 50%, #81D742 100%);
+    background: linear-gradient(90deg, var(--navy) 0%, var(--teal) 50%, var(--green) 100%);
     border-radius: 2px;
     z-index: 0;
   }
@@ -135,15 +135,16 @@
   .node-dot.active {
     background: var(--green);
     border-color: var(--green);
-    box-shadow: 0 0 0 6px rgba(129,215,66,0.2);
+    box-shadow: 0 0 0 6px rgba(101,155,182,0.25);
     transform: scale(1.2);
   }
 
   .node-label {
     font-size: 11px;
     font-weight: 600;
-    color: var(--navy);
+    color: #333333;
     line-height: 1.3;
+    font-family: 'Raleway', sans-serif;
   }
 
   .node-time {
@@ -333,6 +334,7 @@
 <body>
 
 <div class="header">
+  <img src="https://www.highconflictinstitute.com/wp-content/uploads/2022/09/HCI-Logo-1.png" alt="High Conflict Institute" style="height: 60px; margin-bottom: 20px;">
   <div class="badge">Customer Journey Map</div>
   <h1>From Keynote Audience to Annual Partner</h1>
   <p>The complete journey from first hearing Megan speak to becoming a long term organizational transformation partner</p>
@@ -480,7 +482,7 @@
         </ul>
         <div class="emotion-bar">
           <span class="emotion-label">Trust</span>
-          <div class="emotion-meter"><div class="emotion-fill" style="width:55%; background:var(--green)"></div></div>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:55%; background:var(--teal)"></div></div>
         </div>
       </div>
     </div>
@@ -557,7 +559,7 @@
         </ul>
         <div class="emotion-bar">
           <span class="emotion-label">Confidence</span>
-          <div class="emotion-meter"><div class="emotion-fill" style="width:80%; background:var(--green)"></div></div>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:80%; background:var(--teal)"></div></div>
         </div>
       </div>
     </div>
@@ -597,7 +599,7 @@
         </ul>
         <div class="emotion-bar">
           <span class="emotion-label">Satisfaction</span>
-          <div class="emotion-meter"><div class="emotion-fill" style="width:90%; background:var(--green)"></div></div>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:90%; background:var(--teal)"></div></div>
         </div>
       </div>
     </div>
@@ -637,7 +639,7 @@
         </ul>
         <div class="emotion-bar">
           <span class="emotion-label">Loyalty</span>
-          <div class="emotion-meter"><div class="emotion-fill" style="width:92%; background:var(--green)"></div></div>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:92%; background:var(--teal)"></div></div>
         </div>
       </div>
     </div>
