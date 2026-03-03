@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HCI Corporate Customer Journey Map</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --navy: #0F0E15;
+    --green: #81D742;
+    --teal: #1A6B5C;
+    --white: #FFFFFF;
+    --light: #F8F9FA;
+    --border: #E2E8F0;
+    --muted: #64748B;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--light);
+    color: var(--navy);
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, #1a1930 100%);
+    color: var(--white);
+    padding: 48px 40px 40px;
+    text-align: center;
+  }
+
+  .header .badge {
+    display: inline-block;
+    background: rgba(129,215,66,0.15);
+    border: 1px solid rgba(129,215,66,0.3);
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+  .header p { font-size: 16px; opacity: 0.75; max-width: 550px; margin: 0 auto; }
+
+  .journey-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  /* Phase Navigation */
+  .phase-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .phase-tab {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: all 0.3s;
+    border: none;
+    background: none;
+  }
+
+  .phase-tab:hover { background: var(--light); color: var(--navy); }
+  .phase-tab.active { background: var(--navy); color: var(--white); }
+
+  .phase-tab .phase-num {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 2px;
+  }
+
+  /* Timeline Visual */
+  .timeline {
+    position: relative;
+    margin: 40px 0;
+  }
+
+  .timeline-line {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal) 0%, var(--green) 50%, #81D742 100%);
+    border-radius: 2px;
+    z-index: 0;
+  }
+
+  .timeline-nodes {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-node {
+    text-align: center;
+    width: 120px;
+  }
+
+  .node-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 4px solid var(--teal);
+    margin: 18px auto 12px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .node-dot.active {
+    background: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 0 6px rgba(129,215,66,0.2);
+    transform: scale(1.2);
+  }
+
+  .node-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .node-time {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Phase Details */
+  .phase-detail {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .phase-detail.active { display: block; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .detail-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .detail-card h4 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--teal);
+    margin-bottom: 12px;
+  }
+
+  .detail-card p, .detail-card li {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #4A5568;
+  }
+
+  .detail-card ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .detail-card ul li {
+    padding: 6px 0;
+    border-bottom: 1px solid #F1F5F9;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .detail-card ul li:last-child { border-bottom: none; }
+
+  .detail-card ul li::before {
+    content: '→';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .emotion-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: var(--light);
+    border-radius: 8px;
+  }
+
+  .emotion-label {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 80px;
+  }
+
+  .emotion-meter {
+    flex: 1;
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .emotion-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  /* Full width cards */
+  .full-card {
+    grid-column: 1 / -1;
+  }
+
+  /* Conversion metric */
+  .conversion-strip {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .conv-metric {
+    flex: 1;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .conv-metric .number {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--teal);
+  }
+
+  .conv-metric .label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* Revenue snapshot */
+  .revenue-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #F1F5F9;
+  }
+
+  .revenue-row:last-child { border-bottom: none; }
+
+  .rev-year {
+    font-weight: 700;
+    font-size: 14px;
+    min-width: 60px;
+  }
+
+  .rev-bar-track {
+    flex: 1;
+    height: 20px;
+    background: #EDF2F7;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .rev-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .rev-amount {
+    min-width: 80px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .detail-grid { grid-template-columns: 1fr; }
+    .phase-nav { flex-wrap: wrap; }
+    .phase-tab { min-width: 45%; }
+    .timeline-nodes { flex-wrap: wrap; justify-content: center; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">Customer Journey Map</div>
+  <h1>From Keynote Audience to Annual Partner</h1>
+  <p>The complete journey from first hearing Megan speak to becoming a long term organizational transformation partner</p>
+</div>
+
+<div class="journey-container">
+
+  <!-- Phase Navigation -->
+  <div class="phase-nav">
+    <button class="phase-tab active" onclick="showPhase(0)">
+      <span class="phase-num">Phase 1</span>
+      Awareness
+    </button>
+    <button class="phase-tab" onclick="showPhase(1)">
+      <span class="phase-num">Phase 2</span>
+      Engagement
+    </button>
+    <button class="phase-tab" onclick="showPhase(2)">
+      <span class="phase-num">Phase 3</span>
+      Assessment
+    </button>
+    <button class="phase-tab" onclick="showPhase(3)">
+      <span class="phase-num">Phase 4</span>
+      Decision
+    </button>
+    <button class="phase-tab" onclick="showPhase(4)">
+      <span class="phase-num">Phase 5</span>
+      Onboarding
+    </button>
+    <button class="phase-tab" onclick="showPhase(5)">
+      <span class="phase-num">Phase 6</span>
+      Partnership
+    </button>
+    <button class="phase-tab" onclick="showPhase(6)">
+      <span class="phase-num">Phase 7</span>
+      Expansion
+    </button>
+  </div>
+
+  <!-- Timeline Visual -->
+  <div class="timeline">
+    <div class="timeline-line"></div>
+    <div class="timeline-nodes">
+      <div class="timeline-node" onclick="showPhase(0)">
+        <div class="node-dot active" id="dot-0"></div>
+        <div class="node-label">Conference / Event</div>
+        <div class="node-time">Day 0</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(1)">
+        <div class="node-dot" id="dot-1"></div>
+        <div class="node-label">Lead Capture</div>
+        <div class="node-time">Week 1</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(2)">
+        <div class="node-dot" id="dot-2"></div>
+        <div class="node-label">Free Assessment</div>
+        <div class="node-time">Week 2</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(3)">
+        <div class="node-dot" id="dot-3"></div>
+        <div class="node-label">Discovery Call</div>
+        <div class="node-time">Week 3</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(4)">
+        <div class="node-dot" id="dot-4"></div>
+        <div class="node-label">Onboard</div>
+        <div class="node-time">Month 1</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(5)">
+        <div class="node-dot" id="dot-5"></div>
+        <div class="node-label">Year 1 Partner</div>
+        <div class="node-time">Months 2-12</div>
+      </div>
+      <div class="timeline-node" onclick="showPhase(6)">
+        <div class="node-dot" id="dot-6"></div>
+        <div class="node-label">Expand & Renew</div>
+        <div class="node-time">Year 2+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 1: Awareness -->
+  <div class="phase-detail active" id="phase-0">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>A decision maker (CHRO, VP of HR, General Counsel, or COO) attends a SHRM conference, HR summit, or industry event where Megan delivers "The 5% Problem" signature keynote. For 45 to 60 minutes, they experience a visceral realization: the 5% of high conflict individuals in their organization are driving 80% of their HR nightmares.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>Keynote presentation (live or virtual)</li>
+          <li>Conference program listing and speaker bio</li>
+          <li>Event app or conference materials</li>
+          <li>"It's All Your Fault!" podcast discovery</li>
+          <li>Word of mouth from a colleague who attended</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"That describes exactly what we are dealing with"</li>
+          <li>"I can name those 5% people right now"</li>
+          <li>"We have been handling this all wrong"</li>
+          <li>"I need to know more about those frameworks"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Urgency</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:75%; background:var(--teal)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">300+</div><div class="label">Avg Audience Size</div></div>
+      <div class="conv-metric"><div class="number">15-20%</div><div class="label">Scan QR / Take Card</div></div>
+      <div class="conv-metric"><div class="number">45-60</div><div class="label">Qualified Leads</div></div>
+      <div class="conv-metric"><div class="number">$0</div><div class="label">Cost to HCI</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Engagement -->
+  <div class="phase-detail" id="phase-1">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>Within 48 hours of the keynote, leads receive a personalized follow up sequence. The key asset: a free 10 question Conflict Readiness Assessment that gives them an immediate snapshot of their organization's vulnerability. This is the bridge from inspiration to action.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>Post-event email with assessment link</li>
+          <li>QR code from keynote slides</li>
+          <li>LinkedIn connection and message</li>
+          <li>Free resource download (BIFF at Work chapter)</li>
+          <li>Podcast episode recommendation</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"Let me see how bad our situation really is"</li>
+          <li>"This feels like a professional approach, not a pitch"</li>
+          <li>"I want to share this with my HR director"</li>
+          <li>"The assessment results confirmed my suspicion"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Trust</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:55%; background:var(--green)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">60%</div><div class="label">Open Rate</div></div>
+      <div class="conv-metric"><div class="number">35%</div><div class="label">Take Assessment</div></div>
+      <div class="conv-metric"><div class="number">15-20</div><div class="label">Hot Leads</div></div>
+      <div class="conv-metric"><div class="number">$0</div><div class="label">Cost to HCI</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 3: Assessment -->
+  <div class="phase-detail" id="phase-2">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>Leads who complete the free assessment and score in the "at risk" or "critical" zones receive an automated invitation to book a complimentary 30 minute assessment debrief with Megan or a senior consultant. This call reviews their results and opens the conversation about organizational transformation.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>Assessment results email with score breakdown</li>
+          <li>Calendar booking link for debrief call</li>
+          <li>Custom cost calculator showing their annual conflict cost</li>
+          <li>Case study relevant to their industry</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"Our score is lower than I expected"</li>
+          <li>"This cost calculator is eye opening"</li>
+          <li>"I need to make a case to leadership"</li>
+          <li>"A free debrief call seems low risk"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Urgency</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:85%; background:#E53E3E"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">40%</div><div class="label">Book Debrief Call</div></div>
+      <div class="conv-metric"><div class="number">8-10</div><div class="label">Discovery Calls</div></div>
+      <div class="conv-metric"><div class="number">85%</div><div class="label">Show Rate</div></div>
+      <div class="conv-metric"><div class="number">$0</div><div class="label">Cost to HCI</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 4: Decision -->
+  <div class="phase-detail" id="phase-3">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>The discovery call follows a four step framework: (1) Pain Mapping to surface the real organizational cost, (2) Calculator Reveal showing their specific annual conflict number, (3) Package Presentation matching pain to the right tier, and (4) Decision Accelerator creating urgency through calendar availability. This is not a sales pitch; it is a diagnostic conversation.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>30 minute Zoom discovery call</li>
+          <li>Personalized conflict cost calculation</li>
+          <li>Tier recommendation with ROI projection</li>
+          <li>Proposal document within 24 hours</li>
+          <li>Follow up call with stakeholders if needed</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"The ROI makes the business case for me"</li>
+          <li>"This feels like a partnership, not a vendor"</li>
+          <li>"I can present this to my CFO with real numbers"</li>
+          <li>"The annual model makes more sense than one off"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Confidence</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:80%; background:var(--green)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">40-50%</div><div class="label">Close Rate</div></div>
+      <div class="conv-metric"><div class="number">4-5</div><div class="label">New Partners / Event</div></div>
+      <div class="conv-metric"><div class="number">$42K-$150K</div><div class="label">Annual Contract</div></div>
+      <div class="conv-metric"><div class="number">2-3 wks</div><div class="label">Avg Sales Cycle</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 5: Onboarding -->
+  <div class="phase-detail" id="phase-4">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>New partners experience a structured 30 day onboarding that immediately demonstrates value. Week 1 is the full Conflict Readiness Assessment (40 questions, 8 dimensions). Weeks 2 to 3 deliver the diagnostic results and implementation roadmap. Week 4 launches the first workshop or keynote. Partners see results before the second invoice arrives.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>Welcome call with dedicated account lead</li>
+          <li>Full 40 question Conflict Readiness Assessment</li>
+          <li>Executive briefing on assessment results</li>
+          <li>Custom 12 month implementation calendar</li>
+          <li>First keynote or half day workshop delivered</li>
+          <li>Access to HCI content library and resources</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"This is more thorough than I expected"</li>
+          <li>"The assessment revealed things we did not see"</li>
+          <li>"My team is already talking about the first workshop"</li>
+          <li>"I feel like we have a real partner here"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Satisfaction</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:90%; background:var(--green)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">100%</div><div class="label">Onboarding Completion</div></div>
+      <div class="conv-metric"><div class="number">30 Days</div><div class="label">Time to First Win</div></div>
+      <div class="conv-metric"><div class="number">9.2/10</div><div class="label">Target NPS</div></div>
+      <div class="conv-metric"><div class="number">2+</div><div class="label">Internal Champions Created</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 6: Partnership -->
+  <div class="phase-detail" id="phase-5">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>Throughout Year 1, the partnership delivers consistent value through a cadence of keynotes, workshops, coaching calls, and strategic check ins. Quarterly reviews track progress against the baseline assessment. By Month 6, measurable improvements in complaint volume, turnover, and management confidence are documented. The annual relationship transforms from "training vendor" to "embedded strategic partner."</p>
+      </div>
+      <div class="detail-card">
+        <h4>Touchpoints</h4>
+        <ul>
+          <li>Monthly or bi-weekly coaching calls</li>
+          <li>Quarterly keynotes and workshops</li>
+          <li>Quarterly Conflict Readiness re-assessment</li>
+          <li>Executive briefing with trend analysis</li>
+          <li>Custom content development for internal use</li>
+          <li>Priority email and phone support</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>What They're Thinking</h4>
+        <ul>
+          <li>"HR complaints are down 25% since we started"</li>
+          <li>"Managers are actually using the BIFF framework"</li>
+          <li>"The quarterly data makes it easy to justify renewal"</li>
+          <li>"Other departments are asking for training too"</li>
+        </ul>
+        <div class="emotion-bar">
+          <span class="emotion-label">Loyalty</span>
+          <div class="emotion-meter"><div class="emotion-fill" style="width:92%; background:var(--green)"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">25-30%</div><div class="label">Complaint Reduction</div></div>
+      <div class="conv-metric"><div class="number">15-20%</div><div class="label">Turnover Improvement</div></div>
+      <div class="conv-metric"><div class="number">3-5x</div><div class="label">Measured ROI</div></div>
+      <div class="conv-metric"><div class="number">85%+</div><div class="label">Renewal Rate Target</div></div>
+    </div>
+  </div>
+
+  <!-- Phase 7: Expansion -->
+  <div class="phase-detail" id="phase-6">
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h4>What Happens</h4>
+        <p>Year 2+ is where the real compounding begins. Partners renew and upgrade to higher tiers. Internal champions become certified HCI trainers through the certification program. The organization becomes a case study and referral source. Some partners expand to include certification tracks ($5K to $50K add on revenue), executive retreats, and multi-site rollouts.</p>
+      </div>
+      <div class="detail-card">
+        <h4>Expansion Paths</h4>
+        <ul>
+          <li>Tier upgrade (Foundation to Growth, Growth to Enterprise)</li>
+          <li>Internal trainer certification program ($5K to $15K per person)</li>
+          <li>Multi-site or multi-division rollout</li>
+          <li>Executive leadership retreat add on ($25K to $50K)</li>
+          <li>Custom course development for their LMS</li>
+          <li>Speaking referrals to peer organizations</li>
+        </ul>
+      </div>
+      <div class="detail-card">
+        <h4>Revenue Growth per Partner</h4>
+        <div class="revenue-row">
+          <span class="rev-year">Year 1</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:35%">$42K-$72K</div></div>
+          <span class="rev-amount">$42K-$72K</span>
+        </div>
+        <div class="revenue-row">
+          <span class="rev-year">Year 2</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:55%">$72K-$120K</div></div>
+          <span class="rev-amount">$72K-$120K</span>
+        </div>
+        <div class="revenue-row">
+          <span class="rev-year">Year 3</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:75%">$100K-$175K</div></div>
+          <span class="rev-amount">$100K-$175K</span>
+        </div>
+        <div class="revenue-row">
+          <span class="rev-year">Year 4+</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:100%">$150K-$250K+</div></div>
+          <span class="rev-amount">$150K-$250K+</span>
+        </div>
+      </div>
+    </div>
+    <div class="conversion-strip">
+      <div class="conv-metric"><div class="number">85%</div><div class="label">Renewal Rate</div></div>
+      <div class="conv-metric"><div class="number">40%</div><div class="label">Upgrade Rate</div></div>
+      <div class="conv-metric"><div class="number">2-3</div><div class="label">Referrals Per Partner</div></div>
+      <div class="conv-metric"><div class="number">$250K+</div><div class="label">Lifetime Value</div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showPhase(index) {
+  // Update tabs
+  document.querySelectorAll('.phase-tab').forEach((tab, i) => {
+    tab.classList.toggle('active', i === index);
+  });
+
+  // Update timeline dots
+  document.querySelectorAll('.node-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i <= index);
+  });
+
+  // Update phase details
+  document.querySelectorAll('.phase-detail').forEach((detail, i) => {
+    detail.classList.toggle('active', i === index);
+  });
+}
+</script>
+
+</body>
+</html>
