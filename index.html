@@ -341,11 +341,73 @@
     font-size: 14px;
   }
 
+  /* CTA Links */
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--navy) 0%, #013A6B 100%);
+    color: var(--white);
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+    transition: all 0.3s;
+    letter-spacing: 0.3px;
+  }
+  .cta-link:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(2,70,130,0.3); }
+  .cta-link.secondary {
+    background: transparent;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+  }
+  .cta-link.secondary:hover { background: var(--navy); color: var(--white); }
+  .cta-link svg { width: 14px; height: 14px; }
+
+  /* Tools Banner */
+  .tools-banner {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .tool-card {
+    text-align: center;
+    padding: 20px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .tool-card:hover { border-color: var(--teal); box-shadow: 0 4px 16px rgba(101,155,182,0.15); transform: translateY(-2px); }
+  .tool-icon { font-size: 28px; margin-bottom: 10px; }
+  .tool-card h5 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 6px; font-family: 'Raleway', sans-serif; }
+  .tool-card p { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+  .tool-card a {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1.5px solid var(--navy);
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .tool-card a:hover { background: var(--navy); color: var(--white); }
+
   @media (max-width: 768px) {
     .detail-grid { grid-template-columns: 1fr; }
     .phase-nav { flex-wrap: wrap; }
     .phase-tab { min-width: 45%; }
     .timeline-nodes { flex-wrap: wrap; justify-content: center; gap: 16px; }
+    .tools-banner { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -452,6 +514,10 @@
           <li>"It's All Your Fault!" podcast discovery</li>
           <li>Word of mouth from a colleague who attended</li>
         </ul>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://www.highconflictinstitute.com/megan-hunter" target="_blank" class="cta-link">Meet the Speaker: Megan Hunter <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+          <a href="https://www.highconflictinstitute.com/custom-training/" target="_blank" class="cta-link secondary">Book a Keynote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
       </div>
       <div class="detail-card">
         <h4>What They're Thinking</h4>
@@ -491,6 +557,7 @@
           <li>Free resource download (BIFF at Work chapter)</li>
           <li>Podcast episode recommendation</li>
         </ul>
+        <a href="https://hciassessement.pages.dev/" target="_blank" class="cta-link">Take the Conflict Readiness Assessment <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
       </div>
       <div class="detail-card">
         <h4>What They're Thinking</h4>
@@ -529,6 +596,10 @@
           <li>Custom cost calculator showing their annual conflict cost</li>
           <li>Case study relevant to their industry</li>
         </ul>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="https://hciassessement.pages.dev/" target="_blank" class="cta-link">View Assessment Page <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+          <a href="https://hcicalculator.pages.dev/" target="_blank" class="cta-link secondary">Try the Cost Calculator <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+        </div>
       </div>
       <div class="detail-card">
         <h4>What They're Thinking</h4>
@@ -569,6 +640,7 @@
           <li>Proposal document within 24 hours</li>
           <li>Follow up call with stakeholders if needed</li>
         </ul>
+        <a href="https://hcicalculator.pages.dev/" target="_blank" class="cta-link">Calculate Your Conflict Cost <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
       </div>
       <div class="detail-card">
         <h4>What They're Thinking</h4>
@@ -719,6 +791,28 @@
       <div class="conv-metric"><div class="number">40%</div><div class="label">Upgrade Rate</div></div>
       <div class="conv-metric"><div class="number">2-3</div><div class="label">Referrals Per Partner</div></div>
       <div class="conv-metric"><div class="number">$250K+</div><div class="label">Lifetime Value</div></div>
+    </div>
+  </div>
+
+  <!-- Tools & Resources Banner -->
+  <div class="tools-banner">
+    <div class="tool-card">
+      <div class="tool-icon">📋</div>
+      <h5>Conflict Readiness Assessment</h5>
+      <p>10 question diagnostic that reveals your organization's vulnerability to high conflict situations and scores your readiness across key dimensions.</p>
+      <a href="https://hciassessement.pages.dev/" target="_blank">Take the Assessment →</a>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">💰</div>
+      <h5>Conflict Cost Calculator</h5>
+      <p>See the real annual cost of unmanaged conflict in your organization. Input your numbers and get a personalized ROI projection for HCI partnership.</p>
+      <a href="https://hcicalculator.pages.dev/" target="_blank">Calculate Your Cost →</a>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">🌐</div>
+      <h5>High Conflict Institute</h5>
+      <p>Learn more about HCI's programs, certifications, books, and the research behind the New Ways for Work method and BIFF Response framework.</p>
+      <a href="https://www.highconflictinstitute.com/" target="_blank">Visit HCI →</a>
     </div>
   </div>
 
